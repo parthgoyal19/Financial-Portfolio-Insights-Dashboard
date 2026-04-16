@@ -1,0 +1,81 @@
+# VS Code
+.vscode/
+# JetBrains
+.idea/
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# General
+####################
+# Logs and temp files
+*.log
+logs/
+*.tmp
+*.temp
+
+# Ignore secrets and environment config
+.env
+.env.* 
+*.secrets
+secrets.json
+credentials/
+*.key
+*.pem
+
+# Python
+####################
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+env/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Packaging
+pip-log.txt
+pip-delete-this-directory.txt
+.Python
+
+# Jupyter
+.ipynb_checkpoints/
+profile_default/
+ipython_config.py
+*.nbconvert.ipynb
+jupyter_runtime/
+
+# Database / data artifacts (adjust if you track data in repo)
+*.sqlite3
+*.db
+*.db3
+*.sqlite
+
+# Notebook and outputs
+*.out
+*.log
+
+# Large/binary BI artifacts (uncomment if you want to ignore)
+# *.pbix
+# *.pbit
+
+# Misc
+####################
+coverage/
+reports/
+.idea/
+.vagrant/
+*.swp
+*~
+.project
+.cache/
+thumbs.db
+rough/
+postgres_data/
+Theme.txt

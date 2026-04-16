@@ -1,0 +1,127 @@
+-- =============================================================
+-- DAX Measures for the Tbl_Measures Table
+-- =============================================================
+
+-- =============================================================
+
+Asset Count = 
+DISTINCTCOUNT('Fact_MarketData'[Asset Name])&" "&SELECTEDVALUE(Fact_MarketData[Asset Class])&"s"
+
+-- =============================================================
+
+Average Daily Return = 
+AVERAGEX(
+    Dim_Date,
+    [Daily Return %]
+)
+
+-- =============================================================
+
+Avg Asset Return % = 
+AVERAGEX(
+    VALUES('Fact_MarketData'[Asset Name]),
+    [Total Return %]
+)
+
+-- =============================================================
+
+Daily Return % = 
+VAR CurrentPrice = SELECTEDVALUE('Fact_MarketData'[Price])
+VAR PreviousDayPrice = 
+    CALCULATE(
+        SELECTEDVALUE('Fact_MarketData'[Price]),
+        PREVIOUSDAY('Dim_Date'[Date])
+    )
+RETURN
+    IF(
+        NOT ISBLANK(CurrentPrice) && NOT ISBLANK(PreviousDayPrice),
+        DIVIDE(CurrentPrice - PreviousDayPrice, PreviousDayPrice)
+    )
+
+-- =============================================================
+
+Growth of ₹100 = 
+VAR StartDate = CALCULATE(MIN('Fact_MarketData'[Date]), ALL('Dim_Date'))
+VAR StartPrice = 
+    CALCULATE(
+        SELECTEDVALUE('Fact_MarketData'[Price]),
+        'Fact_MarketData'[Date] = StartDate,
+        ALL('Dim_Date'[Date])
+    )
+VAR CurrentPrice = SELECTEDVALUE('Fact_MarketData'[Price])
+RETURN
+    IF(
+        NOT ISBLANK(StartPrice),
+        DIVIDE(CurrentPrice, StartPrice) * 100
+    )
+
+-- =============================================================
+
+Latest Price = 
+VAR MaxDate = MAX('Fact_MarketData'[Date])
+RETURN
+    CALCULATE(
+        SELECTEDVALUE('Fact_MarketData'[Price]),
+        'Fact_MarketData'[Date] = MaxDate
+    )
+
+-- =============================================================
+
+Price 90 Days Ago = 
+CALCULATE(
+    SELECTEDVALUE('Fact_MarketData'[Price]),
+    DATEADD('Dim_Date'[Date], -90, DAY)
+)
+
+-- =============================================================
+
+Total Return % = 
+VAR CurrentAsset = SELECTEDVALUE('Fact_MarketData'[Asset Name])
+
+// Find the first and last date FOR THIS SPECIFIC ASSET
+VAR StartDateForAsset = 
+    CALCULATE(
+        MIN('Fact_MarketData'[date]),
+        'Fact_MarketData'[Asset Name] = CurrentAsset
+    )
+VAR EndDateForAsset = 
+    CALCULATE(
+        MAX('Fact_MarketData'[date]),
+        'Fact_MarketData'[Asset Name] = CurrentAsset
+    )
+
+VAR StartPrice = 
+    CALCULATE(
+        SELECTEDVALUE('Fact_MarketData'[Price]),
+        'Fact_MarketData'[date] = StartDateForAsset,
+        'Fact_MarketData'[Asset Name] = CurrentAsset
+    )
+
+VAR EndPrice = 
+    CALCULATE(
+        SELECTEDVALUE('Fact_MarketData'[Price]),
+        'Fact_MarketData'[date] = EndDateForAsset,
+        'Fact_MarketData'[Asset Name] = CurrentAsset
+    )
+
+RETURN
+    DIVIDE(EndPrice - StartPrice, StartPrice)
+
+-- =============================================================
+
+Volatility (90d) = 
+VAR EndDate = MAX('Dim_Date'[Date])
+VAR DateRange = 
+    DATESINPERIOD(
+        'Dim_Date'[Date],
+        EndDate,
+        -90,
+        DAY
+    )
+RETURN
+    STDEVX.P(
+        DateRange,
+        [Daily Return %]
+    )
+
+-- =============================================================
