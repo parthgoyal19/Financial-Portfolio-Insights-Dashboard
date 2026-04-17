@@ -1,4 +1,4 @@
-# Unified Investment Portfolio Dashboard
+# Financial-Portfolio-Insights-Dashboard
 
 ![Tech Stack](https://img.shields.io/badge/Tech-Python%20%7C%20PostgreSQL%20%7C%20HTML5/CSS3%20%7C%20Power%20BI-blue)
 ![Status](https://img.shields.io/badge/Status-Completed-success)
