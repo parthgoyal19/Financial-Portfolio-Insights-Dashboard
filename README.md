@@ -142,8 +142,8 @@ The dashboard provides insights through several key calculations:
 1.  **Prerequisites:** Ensure you have Docker Desktop installed and running.
 2.  **Clone the Repository:**
     ```bash
-    git clone https://github.com/bISTP/Unified-Investment-Portfolio-Dashboard.git
-    cd Unified-Investment-Portfolio-Dashboard
+    git clone https://github.com/bISTP/Financial-Portfolio-Insights-Dashboard.git
+    cd Financial-Portfolio-Insights-Dashboard
     ```
 3.  **Launch the Database:** From the root directory, start the PostgreSQL container.
     ```bash
@@ -157,4 +157,4 @@ The dashboard provides insights through several key calculations:
     ```bash
     python scripts/ingest_data.py
     ```
-6.  **View the Dashboard:** Open the `Unified_Investor_Dashboard.pbix` file. You may need to refresh the data source to connect to your local PostgreSQL instance.
+6.  **View the Dashboard:** Open the `Financial-Portfolio-Insights-Dashboard.pbix` file. You may need to refresh the data source to connect to your local PostgreSQL instance.
